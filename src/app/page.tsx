@@ -1,11 +1,7 @@
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 const Page = () => {
   return (
     <div className="min-h-screen min-w-screen flex items-center justify-center">
-      <Button variant="outline">
-        Click me
-      </Button>
+      <h1 className="text-4xl font-bold">Welcome to the Home Page</h1>
     </div>
   );
 };
