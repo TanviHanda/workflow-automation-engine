@@ -24,7 +24,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 // import { authClient } from "@/lib/auth-client";
-import { cn } from "@/lib/utils";
 import router from "next/dist/shared/lib/router/router";
 import { authClient } from "@/lib/auth-client";
 
@@ -91,6 +90,12 @@ export function RegisterForm() {
                     type="button"
                     disabled={isPending}
                   >
+                    <Image
+                      src="/github-logo.svg"
+                      alt="Github Logo"
+                      width={20}
+                      height={20}
+                    />
                     Continue with Github
                   </Button>
                   <Button
@@ -99,6 +104,12 @@ export function RegisterForm() {
                     type="button"
                     disabled={isPending}
                   >
+                    <Image
+                      src="/google-logo.svg"
+                      alt="Google Logo"
+                      width={20}
+                      height={20}
+                    />
                     Continue with Google
                   </Button>
                 </div>
