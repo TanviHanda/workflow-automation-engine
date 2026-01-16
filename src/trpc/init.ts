@@ -1,4 +1,5 @@
 import { auth } from '@/lib/auth';
+import { polarClient } from '@/lib/polar';
 import { initTRPC, TRPCError } from '@trpc/server';
 import { Code } from 'lucide-react';
 import { headers } from 'next/headers';
@@ -38,6 +39,19 @@ export const protectedProcedure = baseProcedure.use(async ({ctx,next})=>{
   });
 })
 
+export const premiumProcedure = protectedProcedure.use(async({ctx,next})=>{
+  const customer = await polarClient.customers.getStateExternal({
+    externalId: ctx.auth.user.id,
+  });
+  if(
+    !customer.activeSubscriptions || customer.activeSubscriptions.length === 0){
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "Premium membership required to access this resource.",
+    })
+  }
+  return next({ctx:{...ctx,customer}});
+});
 // baseProcedure v/s protectedProcedure
 // A baseProcedure is a procedure that does not require authentication.
 // A protectedProcedure is a procedure that requires authentication. - throw error if the user is not logged in.
