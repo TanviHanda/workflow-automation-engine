@@ -104,7 +104,7 @@ export const EditorBreadcrumbs = ({ workflowId }: { workflowId: string }) => {
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink>
+          <BreadcrumbLink asChild>
             <Link prefetch href="/workflows">
               Workflows
             </Link>
