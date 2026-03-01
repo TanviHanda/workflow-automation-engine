@@ -26,7 +26,7 @@ export type NodeTypeOption = {
 const triggerNodes: NodeTypeOption[] = [
   {
     type: NodeType.MANUAL_TRIGGER,
-    label: "Manual Trigger",
+    label: "Trigger Manually",
     description:
       "Runs the flow on clicking a button. Good for getting stsrted quickly.",
     icon: MousePointerIcon,
