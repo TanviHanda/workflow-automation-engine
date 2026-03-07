@@ -1,11 +1,18 @@
 import type { NodeExecutor } from "@/features/executions/types";
 import { NonRetriableError } from "inngest";
 import ky ,{type Options as kyOptions} from "ky";
+import Handlebars from "handlebars"
+
+Handlebars.registerHelper("json", (context) => {
+    const JsonString = JSON.stringify(context,null,2);
+    const safeString = new Handlebars.SafeString(JsonString);
+    return safeString;
+})
 
 type HttpRequestData = {
-    variableName?: string;
-    endpoint?: string;
-    method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+    variableName: string;
+    endpoint: string;
+    method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
     body?: string;
 }
 
@@ -22,15 +29,22 @@ export const httpRequestExecutor : NodeExecutor<HttpRequestData> = async ({
     }
    if(!data.variableName){
         // TODO: Publish "error" state for HTTP request 
-        throw new NonRetriableError("Variable name configured");
+        throw new NonRetriableError("Variable name not configured");
+    }
+    if(!data.method){
+        // TODO: Publish "error" state for HTTP request 
+        throw new NonRetriableError("Method not configured");
     }
     const result = await step.run("http-request",async() => {
-        const endpoint = data.endpoint;
-        const method = data.method || "GET";
+        const endpoint = Handlebars.compile(data.endpoint)(context);
+        const method = data.method;
+
         const options : kyOptions = {method};
 
         if(["POST","PUT","PATCH"].includes(method)){
-                options.body = data.body;
+            const resolved = Handlebars.compile(data.body || "{}")(context);
+            JSON.parse(resolved); // validate JSON
+            options.body = resolved;
                 options.headers = {
                     "Content-Type": "application/json"
                 };
@@ -50,22 +64,16 @@ const responsePayload = {
     }
 }
 
-if(data.variableName){
+
     return {
             ...context,
             [data.variableName]: responsePayload,
-        }
-}
-
-// Fallbacl to direct httpResponse for backward compatibility
-return {
-    ...context,
-    ...responsePayload,
-}
-        
+        }      
     })
 
     // TODO: Publish "success" state for HTTP request
 
     return result;
 }
+
+
