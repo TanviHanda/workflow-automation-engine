@@ -41,7 +41,7 @@ const formSchema = z.object({
       message:
         "Variable name must start with a letter, underscore, or dollar sign, and can only contain letters, numbers, underscores, or dollar signs",
     }),
-  endpoint: z.url("Please enter a valid URL"),
+  endpoint: z.string().min(1, { message: "Please enter a valid URL" }),
   method: z.enum(["GET", "POST", "PUT", "PATCH", "DELETE"]),
   body: z.string().optional(),
   // .refine() TODO
@@ -183,7 +183,7 @@ export const HttpRequestDialog = ({
                     <FormLabel>Request Body</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder={`{\n "useId:"{{httpRespone.data.id}}",\n "name": "{{httpResponse.data.item}}",\n "items":"{{httpResponse.data.items}}"\n}`}
+                        placeholder={`{\n "userId":"{{httpRespone.data.id}}",\n "name": "{{httpResponse.data.item}}",\n "items":"{{httpResponse.data.items}}"\n}`}
                         className="min-h-[120px] font-mono text-sm"
                         {...field}
                       />
