@@ -18,7 +18,7 @@
     "postinstall": "pnpm run with-env prisma generate"
   },
   "dependencies": {
-    "@ai-sdk/google": "^3.0.3",
+    "@ai-sdk/google": "^3.0.43",
     "@hookform/resolvers": "^5.2.2",
     "@inngest/realtime": "^0.4.6",
     "@paralleldrive/cuid2": "^3.3.0",
@@ -58,7 +58,7 @@
     "@trpc/server": "^11.7.2",
     "@trpc/tanstack-react-query": "^11.7.2",
     "@xyflow/react": "^12.10.0",
-    "ai": "^6.0.7",
+    "ai": "^6.0.116",
     "better-auth": "^1.4.12",
     "class-variance-authority": "^0.7.1",
     "client-only": "^0.0.1",
