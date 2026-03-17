@@ -2,7 +2,7 @@ import { UpgradeModal } from "@/components/upgrade-modal";
 import { TRPCClientError } from "@trpc/client";
 import { useState } from "react";
 
-export const useUpgradeModel = () => {
+export const useUpgradeModal = () => {
   const [open, setOpen] = useState(false);
 
   const handleError = (error: unknown) => {
@@ -14,6 +14,6 @@ export const useUpgradeModel = () => {
     }
   };
 
-  const model = <UpgradeModal open={open} onOpenChange={setOpen} />;
-  return { handleError, model };
+  const modal = <UpgradeModal open={open} onOpenChange={setOpen} />;
+  return { handleError, modal };
 };

@@ -16,7 +16,7 @@ import {
   useRemoveWorkflow,
   useSuspenseWorkflows,
 } from "../hooks/use-workflows";
-import { useUpgradeModel } from "@/hooks/use-upgrade-model";
+import { useUpgradeModal } from "@/hooks/use-upgrade-model";
 import { router } from "better-auth/api";
 import { useRouter } from "next/navigation";
 import { useWorkflowsParams } from "../hooks/use-workflows-params";
@@ -55,7 +55,7 @@ export const WorkflowsList = () => {
 export const WorkflowsHeader = ({ disabled }: { disabled?: boolean }) => {
   const createWorkflow = useCreateWorkflow();
   const router = useRouter();
-  const { handleError, model } = useUpgradeModel();
+  const { handleError, modal } = useUpgradeModal();
   const handleCreate = () => {
     createWorkflow.mutate(undefined, {
       onSuccess: (data) => {
@@ -68,7 +68,7 @@ export const WorkflowsHeader = ({ disabled }: { disabled?: boolean }) => {
   };
   return (
     <>
-      {model}
+      {modal}
       <EntityHeader
         title="Workflows"
         description="Create and manage your workflows"
@@ -112,7 +112,7 @@ export const WorkflowsContainer = ({
 };
 
 export const WorkflowsLoading = () => {
-  return <LoadingView message="Loading workfloes..." />;
+  return <LoadingView message="Loading workflows..." />;
 };
 
 export const WorkflowsError = () => {
@@ -122,7 +122,7 @@ export const WorkflowsError = () => {
 export const WorkflowsEmpty = () => {
   const router = useRouter();
   const createWorkflow = useCreateWorkflow();
-  const { handleError, model } = useUpgradeModel();
+  const { handleError, modal } = useUpgradeModal();
 
   const handleCreate = () => {
     createWorkflow.mutate(undefined, {
@@ -136,7 +136,7 @@ export const WorkflowsEmpty = () => {
   };
   return (
     <>
-      {model}
+      {modal}
       <EmptyView
         onNew={handleCreate}
         message="No workflows found.Create your first workflow to get started."
