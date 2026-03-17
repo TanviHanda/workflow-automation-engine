@@ -5,7 +5,8 @@ import { httpRequestExecutor } from "../components/http-request/executor";
 import { GoogleFormTriggerExecutor } from "@/features/triggers/components/google-form-trigger/executor";
 import { StripeTriggerExecutor } from "@/features/triggers/components/stripe-trigger/executor";
 import { geminiExecutor } from "../components/gemini/executor";
-
+import { discordExecutor } from "../components/discord/executor";
+import { slackExecutor } from "../components/slack/executor";
 export const executorRegistry: Record<NodeType, NodeExecutor> = {
     [NodeType.INITIAL] : manualTriggerExecutor,
     [NodeType.MANUAL_TRIGGER] : manualTriggerExecutor,
@@ -13,6 +14,8 @@ export const executorRegistry: Record<NodeType, NodeExecutor> = {
     [NodeType.GOOGLE_FORM_TRIGGER] : GoogleFormTriggerExecutor,
     [NodeType.STRIPE_TRIGGER] : StripeTriggerExecutor ,
     [NodeType.GEMINI] : geminiExecutor,
+    [NodeType.DISCORD] : discordExecutor,
+    [NodeType.SLACK] : slackExecutor,
 }
 
 export const getExecutor = (type: NodeType): NodeExecutor => {
