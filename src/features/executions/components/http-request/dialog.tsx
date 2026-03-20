@@ -30,7 +30,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import { FileTerminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const formSchema = z.object({
@@ -44,7 +43,6 @@ const formSchema = z.object({
   endpoint: z.string().min(1, { message: "Please enter a valid URL" }),
   method: z.enum(["GET", "POST", "PUT", "PATCH", "DELETE"]),
   body: z.string().optional(),
-  // .refine() TODO
 });
 
 export type HttpRequestFormValues = z.infer<typeof formSchema>;

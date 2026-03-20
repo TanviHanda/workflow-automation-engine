@@ -43,7 +43,7 @@ export const executeWorkflow = inngest.createFunction(
     const inngestEventId = event.id;
     const workflowId = event.data.workflowId;
     if (!inngestEventId || !workflowId) {
-      throw new NonRetriableError("Eent ID or Workflow ID is required");
+      throw new NonRetriableError("Event ID or Workflow ID is required");
     }
 
     await step.run("create-execution",async () => {
