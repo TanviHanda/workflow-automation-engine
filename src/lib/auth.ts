@@ -7,18 +7,27 @@ import prisma from "@/lib/db";
 import { polarClient } from "./polar";
 
 export const auth = betterAuth({
-  // ✅ DATABASE (Prisma – untouched)
+  // DATABASE (Prisma – untouched)
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
 
-  // ✅ AUTH METHOD (Email + Password)
+  // AUTH METHOD (Email + Password)
   emailAndPassword: {
     enabled: true,
     autoSignIn: true,
   },
-
-  // ✅ POLAR PLUGIN (YT FLOW – UPDATED)
+  socialProviders: {
+    github:{
+      clientId: process.env.GITHUB_CLIENT_ID as string,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+    },
+    google:{
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    }
+  },
+  // POLAR PLUGIN (YT FLOW – UPDATED)
   plugins: [
     polar({
       client: polarClient,
