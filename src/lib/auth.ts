@@ -1,10 +1,24 @@
 // lib/auth.ts
 
-import { betterAuth } from "better-auth";
+import { APIError, betterAuth } from "better-auth";
+import { hashPassword } from "better-auth/crypto";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { polar, checkout, portal } from "@polar-sh/better-auth";
 import prisma from "@/lib/db";
 import { polarClient } from "./polar";
+import { validatePasswordPolicy } from "./password-policy";
+
+async function hashValidatedPassword(password: string) {
+  const policyError = validatePasswordPolicy(password);
+
+  if (policyError) {
+    throw new APIError("BAD_REQUEST", {
+      message: policyError,
+    });
+  }
+
+  return hashPassword(password);
+}
 
 export const auth = betterAuth({
   // DATABASE (Prisma – untouched)
@@ -16,6 +30,10 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     autoSignIn: true,
+    minPasswordLength: 8,
+    password: {
+      hash: hashValidatedPassword,
+    },
   },
   socialProviders: {
     github:{

@@ -19,16 +19,33 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormDescription,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
+import {
+  passwordPolicyDescription,
+  validatePasswordPolicy,
+} from "@/lib/password-policy";
 
 const registerSchema = z
   .object({
     email: z.email("Please enter a valid email address"),
-    password: z.string().min(1, "Password is required"),
+    password: z
+      .string()
+      .min(1, "Password is required")
+      .superRefine((value, ctx) => {
+        const policyError = validatePasswordPolicy(value);
+
+        if (policyError) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: policyError,
+          });
+        }
+      }),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -177,6 +194,9 @@ export function RegisterForm() {
                             {...field}
                           />
                         </FormControl>
+                        <FormDescription>
+                          {passwordPolicyDescription}
+                        </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
