@@ -1,16 +1,23 @@
-import type { ComponentProps, HTMLAttributes } from "react";
+import type { ComponentProps, ComponentPropsWithRef } from "react";
 
 import { cn } from "@/lib/utils";
-import { NodeStatus } from "./node-status-indicator";
+import type { NodeStatus } from "./node-status-indicator";
 import { CheckCircle2Icon, Loader2Icon, XCircleIcon } from "lucide-react";
 
-interface baseNodeProps extends HTMLAttributes<HTMLDivElement> {
+interface BaseNodeProps extends ComponentPropsWithRef<"div"> {
   status?: NodeStatus;
 }
 
-export function BaseNode({ className, status, ...props }: baseNodeProps) {
+export function BaseNode({
+  className,
+  status,
+  children,
+  ref,
+  ...props
+}: BaseNodeProps) {
   return (
     <div
+      ref={ref}
       className={cn(
         "bg-card text-card-foreground relative rounded-sm border-muted-foreground hover:bg-accent",
         // "[.react-flow\\_\\_node.selected_&]:border-muted-foreground",
@@ -20,7 +27,7 @@ export function BaseNode({ className, status, ...props }: baseNodeProps) {
       // tabIndex={0}
       {...props}
     >
-      {props.children}
+      {children}
       {status === "error" && (
         <XCircleIcon className="absolute right-0.5 bottom-0.5 size-2 text-red-700 stroke-3" />
       )}

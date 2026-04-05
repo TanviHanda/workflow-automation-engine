@@ -18,7 +18,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useCredentialsParams } from "../hooks/use-credentials-params";
 import { useEntitySearch } from "@/hooks/use-entity-search";
-import type { Credential } from "@/generated/prisma";
+import type { Credential } from "@/generated/prisma/browser";
 import { formatDistanceToNow } from "date-fns";
 import Image from "next/image";
 import { CredentialType } from "@/generated/prisma/browser";
