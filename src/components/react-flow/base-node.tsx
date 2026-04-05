@@ -1,3 +1,5 @@
+//
+import { forwardRef } from "react";
 import type { ComponentProps, ComponentPropsWithRef } from "react";
 
 import { cn } from "@/lib/utils";
@@ -8,38 +10,36 @@ interface BaseNodeProps extends ComponentPropsWithRef<"div"> {
   status?: NodeStatus;
 }
 
-export function BaseNode({
-  className,
-  status,
-  children,
-  ref,
-  ...props
-}: BaseNodeProps) {
-  return (
-    <div
-      ref={ref}
-      className={cn(
-        "bg-card text-card-foreground relative rounded-sm border-muted-foreground hover:bg-accent",
-        // "[.react-flow\\_\\_node.selected_&]:border-muted-foreground",
-        // "[.react-flow\\_\\_node.selected_&]:shadow-lg",
-        className,
-      )}
-      // tabIndex={0}
-      {...props}
-    >
-      {children}
-      {status === "error" && (
-        <XCircleIcon className="absolute right-0.5 bottom-0.5 size-2 text-red-700 stroke-3" />
-      )}
-      {status === "success" && (
-        <CheckCircle2Icon className="absolute right-0.5 bottom-0.5 size-2 text-green-700 stroke-3" />
-      )}
-      {status === "loading" && (
-        <Loader2Icon className="absolute -right-0.5 -bottom-0.5 size-2 text-blue-700 stroke-3 animate-spin" />
-      )}
-    </div>
-  );
-}
+export const BaseNode = forwardRef<HTMLDivElement, BaseNodeProps>(
+  ({ className, status, children, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "bg-card text-card-foreground relative rounded-sm border-muted-foreground hover:bg-accent",
+          className,
+        )}
+        {...props}
+      >
+        {children}
+
+        {status === "error" && (
+          <XCircleIcon className="absolute right-0.5 bottom-0.5 size-2 text-red-700 stroke-3" />
+        )}
+        {status === "success" && (
+          <CheckCircle2Icon className="absolute right-0.5 bottom-0.5 size-2 text-green-700 stroke-3" />
+        )}
+        {status === "loading" && (
+          <Loader2Icon className="absolute -right-0.5 -bottom-0.5 size-2 text-blue-700 stroke-3 animate-spin" />
+        )}
+      </div>
+    );
+  },
+);
+
+BaseNode.displayName = "BaseNode";
+
+// ---------------- HEADER ----------------
 
 export function BaseNodeHeader({
   className,
@@ -50,18 +50,14 @@ export function BaseNodeHeader({
       {...props}
       className={cn(
         "mx-0 my-0 -mb-1 flex flex-row items-center justify-between gap-2 px-3 py-2",
-        // Remove or modify these classes if you modify the padding in the
-        // `<BaseNode />` component.
         className,
       )}
     />
   );
 }
 
-/**
- * The title text for the node. To maintain a native application feel, the title
- * text is not selectable.
- */
+// ---------------- TITLE ----------------
+
 export function BaseNodeHeaderTitle({
   className,
   ...props
@@ -75,6 +71,8 @@ export function BaseNodeHeaderTitle({
   );
 }
 
+// ---------------- CONTENT ----------------
+
 export function BaseNodeContent({
   className,
   ...props
@@ -87,6 +85,8 @@ export function BaseNodeContent({
     />
   );
 }
+
+// ---------------- FOOTER ----------------
 
 export function BaseNodeFooter({ className, ...props }: ComponentProps<"div">) {
   return (
